@@ -50,4 +50,8 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer")
     private Set<Cart> carts;
+
+    public void add(Cart cart) {
+        carts.add(cart);
+    }
 }
