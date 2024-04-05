@@ -27,16 +27,20 @@ public class CheckoutServiceImpl implements CheckoutService {
     @Override
     @Transactional
     public PurchaseResponse placeOrder(Purchase purchase) {
-            Cart cart = purchase.getCart();
-            String orderTrackingNumber = generateOrderTrackingNumber();
-            cart.setOrderTrackingNumber(orderTrackingNumber);
-            Set<Cartitem> cartItems = purchase.getCartItems();
-            cartItems.forEach(item -> cart.add(item));
-            cart.setStatus(StatusType.ordered);
-            Customer customer = purchase.getCustomer();
-            cartRepository.save(cart);
-            customer.add(cart);
-            return new PurchaseResponse(orderTrackingNumber);
+            try {
+                Cart cart = purchase.getCart();
+                String orderTrackingNumber = generateOrderTrackingNumber();
+                cart.setOrderTrackingNumber(orderTrackingNumber);
+                Set<Cartitem> cartItems = purchase.getCartItems();
+                cartItems.forEach(item -> cart.add(item));
+                cart.setStatus(StatusType.ordered);
+                Customer customer = purchase.getCustomer();
+                cartRepository.save(cart);
+                customer.add(cart);
+                return new PurchaseResponse(orderTrackingNumber);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Cart is null or empty");
+            }
     }
 
     private String generateOrderTrackingNumber() {
