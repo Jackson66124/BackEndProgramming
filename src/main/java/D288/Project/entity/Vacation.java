@@ -19,7 +19,7 @@ public class Vacation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "vacation-id")
+    @Column(name = "vacation_id")
     private Long id;
 
     @OneToMany(mappedBy =  "vacation", cascade = CascadeType.ALL)
